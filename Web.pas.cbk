@@ -1,0 +1,80 @@
+unit Web;
+
+interface
+
+uses IdHTTP;
+
+var
+  name: string;
+  secondName: string;
+  id: string;
+
+const
+  home = 'http://localhost:8080/';
+
+function GetRequest(const url: string): string;
+
+function UploadTest(const data: string): string;
+
+function Registrate(
+  const firstName: string;
+  const lastName: string;
+  const email: string;
+  const bornDate: string;
+  const password: string
+): string;
+
+implementation
+
+function GetCachedId(): string;
+begin
+  Result := id;
+end;  
+
+function GetId(const firstName: string; const lastName: string): string;
+begin
+  Result := GetRequest(Concat(
+    home, 'find?firstName=', firstName, '&lastName=', lastName
+  ));
+end;
+
+function UploadTest(const data: string): string;
+begin
+  Result := GetRequest(UTF8Encode(Concat(
+    home, 'upload/', id, '?data=', UTF8Encode(data)
+  )));
+end;
+
+function Registrate(
+  const firstName: string;
+  const lastName: string;
+  const email: string;
+  const bornDate: string;
+  const password: string
+): string;
+begin
+  name := firstName;
+  secondName := lastName;
+  Result := GetRequest(Concat(
+    home, 'registration?firstName=', firstName,
+    '&lastName=', lastName,
+    '&email=', email,
+    '&bornDate=', bornDate,
+    '&password=', password
+  ));
+  id := GetId(name, secondName);
+end;
+
+function GetRequest(const url: string): string;
+var
+  request: TIdHTTP;
+begin
+  request := TIdHTTP.Create(nil);
+  try
+    Result := UTF8Decode(request.Get(UTF8Encode(url)));
+  finally
+     request.Free;
+  end;
+end;
+
+end.

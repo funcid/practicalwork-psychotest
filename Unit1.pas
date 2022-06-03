@@ -1,13 +1,16 @@
-unit Unit1;
+unit LoginPage;
 
 interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs;
+  Dialogs, StdCtrls, Web;
 
 type
   TForm1 = class(TForm)
+    login: TButton;
+    lbl1: TLabel;
+    procedure loginClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -21,5 +24,9 @@ implementation
 
 {$R *.dfm}
 
+procedure TForm1.loginClick(Sender: TObject);
+begin
+  login.Caption := GetRequest('http://localhost:8080/findall');
+end;
+
 end.
- 
