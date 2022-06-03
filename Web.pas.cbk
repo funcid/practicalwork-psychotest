@@ -10,7 +10,7 @@ var
   id: string;
 
 const
-  home = 'http://localhost:8080/';
+  home = 'http://practicalwork.herokuapp.com/';
 
 function GetRequest(const url: string): string;
 
